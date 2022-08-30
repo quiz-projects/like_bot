@@ -52,6 +52,19 @@ class LikeDB:
         returns:
             The number of likes and dislikes for the post
         '''
+        if user_id in self.db.keys():
+            if self.db[user_id]['like'] == 0:
+                self.db[user_id]['like'] = 1
+                if self.db[user_id]['dislike'] == 1:
+                    self.db[user_id]['dislike'] = 0
+            elif self.db[user_id]['like'] == 1:
+                self.db[user_id]['like'] = 0
+        else:
+            self.db[user_id] = {
+                'like': 1,
+                'dislike': 0
+            }
+        self.save()
 
   
     #Add a dislike to the database
