@@ -9,7 +9,7 @@ TOKEN = os.environ['TOKEN']
 
 #Create start command handler
 def start(update:Update, context:CallbackContext):
-    """Starts with picture 0 likes and 0 dislikes"""
+    """Starts with picture all likes and all dislikes"""
     pass
 
 def like(update:Update, context:CallbackContext):
