@@ -23,12 +23,24 @@ class LikeDB:
         returns
             all users likes
         """
+        likes = 0
+        if self.db:
+            for user in self.db:
+                likes += self.db[user]['like']
+        
+        return likes
         
     def all_dislikes(self):
         """Counts all users dislikes
         returns
             all users dislikes
         """
+        dislikes = 0
+        if self.db:
+            for user in self.db:
+                dislikes += self.db[user]['dislike']
+        
+        return dislikes
         
         
     #Add a like to the database
