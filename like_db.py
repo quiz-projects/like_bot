@@ -12,11 +12,11 @@ class LikeDB:
             self.db = {}
             #Save the database to the database file
             with open(db_path, 'w') as f:
-                json.dump(self.db, f)
+                json.dump(self.db, f, indent=4)
 
     def save(self):
         with open(self.db_path, 'w') as f:
-            json.dump(self.db, f)
+            json.dump(self.db, f, indent=4)
     
     def all_likes(self):
         """Counts all users likes
@@ -25,8 +25,8 @@ class LikeDB:
         """
         likes = 0
         if self.db:
-            for user in self.db:
-                likes += self.db[user]['like']
+            for user, data in self.db.items():
+                likes += data['like']
         
         return likes
         
@@ -37,8 +37,8 @@ class LikeDB:
         """
         dislikes = 0
         if self.db:
-            for user in self.db:
-                dislikes += self.db[user]['dislike']
+            for user_id, data in self.db.items():
+                dislikes += data['dislike']
         
         return dislikes
         
@@ -53,17 +53,14 @@ class LikeDB:
             The number of likes and dislikes for the post
         '''
         if self.db.get(user_id):
-            if self.db[user_id]['like'] == 0:
-                self.db[user_id]['like'] = 1
-                if self.db[user_id]['dislike'] == 1:
+                if self.db[user_id]['like'] == 0:
+                    self.db[user_id]['like'] = 1
                     self.db[user_id]['dislike'] = 0
-            elif self.db[user_id]['like'] == 1:
-                self.db[user_id]['like'] = 0
+                elif self.db[user_id]['like'] == 1:
+                    self.db[user_id]['like'] = 0
+                    self.db[user_id]['dislike'] = 0
         else:
-            self.db[user_id] = {
-                'like': 1,
-                'dislike': 0
-            }
+            self.db[user_id] = {'like': 1, 'dislike': 0}
         self.save()
 
   
@@ -79,13 +76,14 @@ class LikeDB:
         if self.db.get(user_id):
             if self.db[user_id]['dislike'] == 0:
                 self.db[user_id]['dislike'] = 1
-                if self.db[user_id]['like'] == 1:
-                    self.db[user_id]['like'] = 0
+                self.db[user_id]['like'] = 0
             elif self.db[user_id]['dislike'] == 1:
                 self.db[user_id]['dislike'] = 0
+                self.db[user_id]['like'] = 0
         else:
-            self.db[user_id] = {
-                'like': 0,
-                'dislike': 1
-            }
+            self.db[user_id] = {'like': 0, 'dislike': 1}
+        self.save()
+
+    def add_user(self, user_id):
+        self.db[user_id] = {'like': 0, 'dislike': 0}
         self.save()
